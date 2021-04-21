@@ -5,7 +5,11 @@ import '../../core/app_colors.dart';
 import '../../core/app_text_styles.dart';
 
 class ScoreCardWidget extends StatelessWidget {
-  const ScoreCardWidget({Key? key}) : super(key: key);
+  final int score;
+  const ScoreCardWidget({
+    Key? key,
+    required this.score,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class ScoreCardWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: ChartWidget(),
+                child: ChartWidget(value: score),
               ),
               Expanded(
                 flex: 3,
