@@ -8,18 +8,20 @@ class QuizCardWidget extends StatelessWidget {
   final int answeredQuestions;
   final int totalQuestions;
   final String image;
+  final VoidCallback onTap;
   QuizCardWidget({
     Key? key,
     required this.title,
     required this.answeredQuestions,
     required this.totalQuestions,
     required this.image,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(

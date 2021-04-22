@@ -1,35 +1,51 @@
 import 'package:devquiz/challenge/widgets/answer_widget.dart';
 import 'package:devquiz/core/app_text_styles.dart';
+import 'package:devquiz/shared/models/answer_model.dart';
+import 'package:devquiz/shared/models/question_model.dart';
 import 'package:flutter/material.dart';
 
-class QuizWidget extends StatelessWidget {
-  final String title;
+class QuizWidget extends StatefulWidget {
+  final QuestionModel question;
+  final VoidCallback onChanged;
   const QuizWidget({
     Key? key,
-    required this.title,
+    required this.question,
+    required this.onChanged,
   }) : super(key: key);
+
+  @override
+  _QuizWidgetState createState() => _QuizWidgetState();
+}
+
+class _QuizWidgetState extends State<QuizWidget> {
+  int indexSelected = -1;
+
+  AnswerModel answer(int index) => widget.question.answers[index];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 64,
+        ),
         Text(
-          title,
+          widget.question.title,
           style: AppTextStyles.heading,
         ),
         SizedBox(height: 24),
-        AnswerWidget(
-          answer: 'Kit de desenvolvimento de interface de usuário',
-          isCorrect: true,
-        ),
-        AnswerWidget(
-          answer: 'Possibilita a criação de aplicativos compliados nativamente',
-          isCorrect: false,
-          isChecked: true,
-        ),
-        AnswerWidget(
-          answer: 'Possibilita a criação de aplicativos compliados nativamente',
-        ),
+        for (var i = 0; i < widget.question.answers.length; i++)
+          AnswerWidget(
+            answer: answer(i),
+            isChecked: indexSelected == i,
+            disabled: indexSelected >= 0,
+            onTap: () {
+              indexSelected = i;
+              setState(() {});
+              Future.delayed(Duration(milliseconds: 2000))
+                  .then((value) => widget.onChanged());
+            },
+          ),
       ],
     );
   }
