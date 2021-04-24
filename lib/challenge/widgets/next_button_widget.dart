@@ -57,7 +57,6 @@ class NextButtonWidget extends StatelessWidget {
       height: 48,
       child: TextButton(
         style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(overlayColor),
           foregroundColor: MaterialStateProperty.all(fontColor),
           backgroundColor: MaterialStateProperty.all(backgroundColor),
           side: MaterialStateProperty.all(BorderSide(

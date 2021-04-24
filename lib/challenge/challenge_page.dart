@@ -1,14 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:devquiz/challenge/challenge_controller.dart';
 import 'package:devquiz/challenge/widgets/next_button_widget.dart';
 import 'package:devquiz/challenge/widgets/question_indicator_widget.dart';
 import 'package:devquiz/challenge/widgets/quiz_widget.dart';
+import 'package:devquiz/result/result_page.dart';
 import 'package:devquiz/shared/models/question_model.dart';
-import 'package:flutter/material.dart';
 
 class ChallengePage extends StatefulWidget {
+  final String title;
   final List<QuestionModel> questions;
   ChallengePage({
     Key? key,
+    required this.title,
     required this.questions,
   }) : super(key: key);
 
@@ -35,6 +38,13 @@ class _ChallengePageState extends State<ChallengePage> {
         curve: Curves.easeIn,
       );
     }
+  }
+
+  void onSelected(bool isCorrect) {
+    if (isCorrect) {
+      controller.correctAnswerCount++;
+    }
+    nextPage();
   }
 
   @override
@@ -68,10 +78,12 @@ class _ChallengePageState extends State<ChallengePage> {
           physics: NeverScrollableScrollPhysics(),
           controller: questionController,
           children: widget.questions
-              .map((q) => QuizWidget(
-                    question: q,
-                    onChanged: nextPage,
-                  ))
+              .map(
+                (q) => QuizWidget(
+                  question: q,
+                  onSelected: onSelected,
+                ),
+              )
               .toList(),
         ),
         bottomNavigationBar: SafeArea(
@@ -94,7 +106,18 @@ class _ChallengePageState extends State<ChallengePage> {
                     Expanded(
                       child: NextButtonWidget.green(
                         'Finalizar',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResultPage(
+                                title: widget.title,
+                                correctAnswers: controller.correctAnswerCount,
+                                totalQuestions: widget.questions.length,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                 ],

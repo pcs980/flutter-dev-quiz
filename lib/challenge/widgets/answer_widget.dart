@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class AnswerWidget extends StatelessWidget {
   final AnswerModel answer;
-  final VoidCallback onTap;
+  final ValueChanged<bool> onTap;
   final bool isChecked;
   final bool disabled;
 
@@ -36,7 +36,9 @@ class AnswerWidget extends StatelessWidget {
     return IgnorePointer(
       ignoring: disabled,
       child: GestureDetector(
-        onTap: onTap,
+        onTap: () {
+          onTap(answer.isCorrect);
+        },
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: Container(
